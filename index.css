@@ -1,0 +1,194 @@
+* {
+	-webkit-user-select: none;
+	-moz--user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+html, body {
+	background: url(image/footer_lodyas.png);
+	height: 100%;
+	min-width: 800px;	
+}
+#wrap, #container {
+	display: block;
+}
+#container {
+	height: inherit;
+	margin: 0 auto;
+	position: relative;
+	width: 750px;
+}
+#wrap {
+	height: inherit;
+}
+
+#one, #two, #three {
+	background-color: rgba(200,200,200,.7);
+	color: white;
+	display: inline-block;
+	font-size: 1.25em;
+	height: 100px;
+	line-height: 100px;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	width: 250px;
+}
+#one {
+	background-color: #4EC6DE;
+	border-bottom: 0;
+}
+#two {
+	border-left: 0;
+	border-right: 0;
+}
+.content {
+	background: url(image/wavegrid.png);
+	border: 4px #4EC6DE solid;
+	display: block;
+	height: 100%;
+	left: 0;
+	position: absolute;
+	top: 100px;
+	width: 100%;
+	
+}
+#resOne {
+	z-index: 1;
+}
+#resTwo {
+	z-index: -1;
+}
+#resThree {
+	z-index: -1;
+}
+
+.wrap-list {
+	background: rgba(212, 219, 226, 0.75);
+	border-radius: 7px;
+	border: 2px #abc solid;
+	display: block;
+	margin: 0 auto;
+	margin-top: 110px;
+	max-height: 400px;
+	min-height: 300px;
+	overflow: auto;
+	padding: 30px 70px;
+	width: 500px;
+}
+.ul-list {
+	display: list-item;
+	list-style: disc inside;
+}
+.li-list {
+	list-style: circle inside;
+	padding: 4px 30px;
+}
+.buttons {
+	background-image: linear-gradient(#2d95b7, #23748e);
+	border-radius: 5px;
+	color: #fff;
+	font-size: 1em;
+	height: 40px;
+	left: 50%;
+	margin-left: -75px;
+	position: absolute;
+	top: 40px;
+	width: 150px;
+}
+.btn-clear {
+	background-image: linear-gradient(#B72D2D, #83182D);
+	position: relative;
+}
+.btn-codes {
+	margin-left: -90px;
+	top: 55px;
+	width: 180px;
+}
+.new-btn-codes {	
+	margin-left: -90px;
+	top: 10px;
+	width: 180px;
+}
+.wrapButton {
+	border-radius: 5px;
+	height: 60px;
+	left: 50%;
+	margin-left: -100px;
+	position: absolute;
+	top: 45px;
+	width: 200px;
+}
+.wrap-codes {
+	background: rgba(212, 219, 226, 0.75);
+	border-radius: 2px;
+	border: 2px #abc solid;
+	display: block;
+	height: 300px;
+	margin: 0 auto;
+	margin-top: 150px;
+	width: 500px;
+}
+/* таблица */
+table {
+	border-collapse: collapse;	
+	height: 200px;
+	margin: 50px auto;
+	padding: 0;
+	width: 450px;
+}
+table * {
+	/*border: 2px black solid; /* Test */
+}
+table td {
+	width: 150px;
+}
+#head {
+	color: white;
+	font: 1em Verdana;
+	height: 36px;
+	text-align: center;
+	text-decoration: underline;
+}
+#count{
+	height: 82px;
+	text-align:center;
+}
+#countS {
+	color: green;
+}
+#countF {
+	color: red;
+}
+#last {	
+	color: rgba(90, 98, 121, 0.8);
+	font: 1.25em 'Roboto Condensed', sans-serif;
+	height: 100px;
+	text-align: center;
+	vertical-align: bottom;
+}
+/* ************************************ */
+#b1, #b2, #b3 {
+	background: rgba(180, 188, 170, 0.3);
+	border-radius: 2px;
+	border: 1px #abc solid;
+	display: block;
+	height: 40px;
+	position: absolute;
+	top: 260px;
+	width: 50px;
+}
+#b1 {
+	left: 195px;
+}
+#b2 {
+	left: 339px;
+	width: 65px;
+}
+#b3 {
+	left: 495px;
+}
