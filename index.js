@@ -1,4 +1,9 @@
 'use strict';
+/* ******************************* Global ************************************************** */
+var allItems = {};
+var resultString = '';
+/* *******************************  ************************************ */
+
 /* Динамическая высота container */
 window.document.body.style.minHeight= screen.height;
 window.document.getElementById("container").style.height = (screen.height-200) + "px";
@@ -20,12 +25,42 @@ $(document).ready(function() {
 		idTabPrev = this.id;	  
 	});
 	/* End Tabs code */
+	/* ******************************* Задание 3 (Основное) ************************************ */
+	$('#btn-get').click(function() {
+		if(!$('#list').length) {
+			$('#THREE').append('<div id="list">ololo</div>');
+			$('#list').addClass('wrap-list');
+			$('#THREE').append('<button id="btn-clear">Clear data</button>');
+			$('#btn-clear').addClass('buttons');
+			$('#btn-clear').click(function() {
+			$('#list').remove();
+			$('#btn-clear').remove();})
+		}
+		setTimeout(function() {
+			callOtherDomain('GET', '/data_set');
+			var obj = JSON.stringify(resultString);
+			alert(obj + " " + resultString);
+		}, 10);
+		setTimeout(function() {console.log(resultString);}, 200);
+		
+	});
+
 });
-
-/* ******************************* Задание 3 (Основное) ************************************ */
-
-
-
+		
+/* ***************************************************************************************** */
+function callOtherDomain(method, endOfUrl) {
+	var url = 'http://careers.intspirit.com/endpoint' + endOfUrl;
+	var request = new window.XMLHttpRequest();
+	request.open(method, url, true);
+	request.onload = function() { 
+		resultString = request.responseText;
+		
+	}
+	request.onerror = function() {
+		alert(request.responseText);
+	}
+	request.send();
+}
 /* ***************************************************************************************** */
 var items = [[],[]]; 
 var types = [];
@@ -36,21 +71,21 @@ errors[0] = 0;
 errors[1] = 0;
 var countLastErrors = 0;
 /* функция посылающая кросс-доменный запрос */
-function callOtherDomain(method, endOfUrl, arrayReplace, callbackParse, callbackShow) {
+/*function callOtherDomain(method, endOfUrl, arrayReplace, callbackParse, callbackShow) {
 	var url = "http://careers.intspirit.com/endpoint" + endOfUrl;
 	var request = new window.XMLHttpRequest();
 	request.open(method, url, true);
 	request.onload = function() {
-		str = request.response; /* $ */
+		str = request.response; 
 		str = str.replace(arrayReplace[0], ' ');
 		str = str.replace(arrayReplace[1], ' ');
 		str = str.replace(/"/g, ' ');
 		callbackParse(str);
 		callbackShow();	
 	}
-	request.onerror = function() { alert(request.response) }/* $ */
+	request.onerror = function() { alert(request.response) }
 	request.send();		
-}
+}*/
 /* Парсинг request.responseText */
 function parseRequest(string) {
 	if((typeof InstallTrigger !== undefined && !window.chrome) || !!window.opera) {
@@ -98,7 +133,7 @@ function parseRequest(string) {
 	console.log("items");
 	console.log(items);
 }
-/* Динамическое создание div элемента и кнопки */
+/* Динамическое создание div элемента и кнопки  ****************************************************************************************/
 function createList(){
 	if((document.getElementById('list'))===null) {
 		var THREE = document.getElementById('THREE');

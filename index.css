@@ -87,7 +87,7 @@ html, body {
 	position: absolute;
 	width: 150px;
 }
-.btn-clear {
+#btn-clear {
 	background-image: linear-gradient(#B72D2D, #83182D);
 	position: relative;
 	top: 40px;
@@ -102,7 +102,7 @@ html, body {
 	top: 10px;
 	width: 180px;
 }
-.btn-get {
+#btn-get {
 	top: 40px;
 }
 .wrapButton {
