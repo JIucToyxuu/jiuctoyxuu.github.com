@@ -38,13 +38,61 @@ $(document).ready(function() {
 		}
 			callOtherDomain('GET', '/data_set', showList);			
 	});
+	/* ******************************* Задание 2 *********************************************** */
+	$('#get-res-code').click(function() {
+			callOtherDomain('GET', '/response_codes', showCodes);
+			/* ******* Таблица статистики ******** */
+			var statWindow = '<div class="wrap-codes" id="codes">\
+			<table id="table"><tbody><tr id="head"><td>Success</td><td>Percent error</td><td>Failure</td></tr>\
+			<tr id="count"><td id="countS"></td><td id="countP"></td><td id="countF"></td></tr>\
+			<tr id="lastError"><td colspan="3" id="last"></td></tr></tbody></table>\
+			<div id="b1"></div><div id="b2"></div><div id="b3"></div></div>'
+			if(!$('#wrapButton').length) {
+				$('#get-res-code').wrap('<div id="wrapButton" class="wrapButton"></div>');
+				$('#get-res-code').addClass('new-btn-codes');
+				$('#TWO').append(statWindow);
+			}
+			
+			
+	});
 
 });
-
+/* ***************************** */
 function showList(string) {
-	console.log(string);
-}
+	/* parse in mozilla & opera */
+	var ar = {};
+	if((typeof InstallTrigger !== undefined && !window.chrome) || !!window.opera) {
+		var regExpParse = new RegExp(/\b(?:[\w!]+?(?=<\/))/gi);
+		var result = string.match(regExpParse);
+		ar['item'] = result[0];
+		ar['type'] = result[1];
 		
+	}
+	/* parse in other browsers */
+	else {
+		var ar = $.parseJSON(string);
+	}
+	
+	
+	console.log(ar);
+}
+/* ********************************* */
+function showCodes(string) {
+	/* parse in mozilla & opera */
+	var ar = {};
+	if((typeof InstallTrigger !== undefined && !window.chrome) || !!window.opera) {
+		var regExpParse = new RegExp(/\b(?:[\w!]+?(?=<\/))/gi);
+		var result = string.match(regExpParse);
+		ar['item'] = result[0];
+		ar['type'] = result[1];
+		
+	}
+	/* parse in other browsers */
+	else {
+		var ar = $.parseJSON(string);
+	}
+	console.log(ar);
+}	
 /* ***************************************************************************************** */
 function callOtherDomain(method, endOfUrl,callbackShow) {
 	var url = 'http://careers.intspirit.com/endpoint' + endOfUrl;
