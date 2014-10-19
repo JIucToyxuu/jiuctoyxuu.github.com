@@ -1,22 +1,32 @@
 'use strict';
 /* Динамическая высота container */
-var contentHeight = screen.height-200; 
 window.document.body.style.minHeight= screen.height;
-window.document.getElementById("container").style.height=contentHeight + "px";
-/* Функция переключающая вкладки */
-function onHoverNavigation(id) {
-	var zero1, zero2, winner, tabActive, tabZero1, tabZero2;
-	if(id=="one") {winner="resOne"; zero1="resTwo"; zero2="resThree"; tabActive=id; tabZero1="two"; tabZero2="three"}
-	if(id=="two") {winner="resTwo"; zero1="resOne"; zero2="resThree"; tabActive=id; tabZero1="one"; tabZero2="three"} 
-	if (id=="three") {winner="resThree"; zero1="resOne"; zero2="resTwo"; tabActive=id; tabZero1="one"; tabZero2="two"}
-	document.getElementById(winner).style.zIndex="1";
-	document.getElementById(zero1).style.zIndex="-1";
-	document.getElementById(zero2).style.zIndex="-1";
-	document.getElementById(tabActive).style.background="#4EC6DE";
-	document.getElementById(tabZero1).style.background="rgba(200,200,200,.7)";
-	document.getElementById(tabZero2).style.background="rgba(200,200,200,.7)";
-};
+window.document.getElementById("container").style.height = (screen.height-200) + "px";
+
+$(document).ready(function() {
+	/* Tabs code */
+	var idTabPrev = '';
+	$(".tabs").hover(function(){
+		if(idTabPrev!=='') {
+			$('#'+idTabPrev.toUpperCase()).css("z-index", "0");
+			$('#'+idTabPrev).css("background","rgba(200,200,200,.7)");
+		}
+		else {
+			$('#one').css("background","rgba(200,200,200,.7)");
+		}
+		$('#'+this.id.toUpperCase()).css("z-index","2");
+		$('#'+this.id).css("background","#4EC6DE");
+	}, function () {
+		idTabPrev = this.id;	  
+	});
+	/* End Tabs code */
+});
+
 /* ******************************* Задание 3 (Основное) ************************************ */
+
+
+
+/* ***************************************************************************************** */
 var items = [[],[]]; 
 var types = [];
 var out = [[],[]]; 
@@ -91,11 +101,11 @@ function parseRequest(string) {
 /* Динамическое создание div элемента и кнопки */
 function createList(){
 	if((document.getElementById('list'))===null) {
-		var resThree = document.getElementById('resThree');
+		var THREE = document.getElementById('THREE');
 		var wrapList = document.createElement('DIV');
 		wrapList.className = "wrap-list";
 		wrapList.id = "list";
-		resThree.appendChild(wrapList);
+		THREE.appendChild(wrapList);
 		var clearButton = document.createElement('BUTTON');
 		clearButton.className = "buttons btn-clear";
 		clearButton.innerText = "Clear data";
@@ -103,12 +113,12 @@ function createList(){
 			items = [[],[]]; 
 			types = [];
 			out = [[],[]];
-			var parent = document.getElementById('resThree');
+			var parent = document.getElementById('THREE');
 			var deleteDiv = document.getElementById('list');
 			parent.removeChild(deleteDiv);
 			parent.removeChild(this);
 		}
-		resThree.appendChild(clearButton);
+		THREE.appendChild(clearButton);
 	}
 		var arrayResponse = ['type', 'item'];
 		setTimeout(callOtherDomain('GET', '/data_set', arrayResponse, parseRequest, showList), 100);
@@ -188,7 +198,7 @@ function keyInArr(str, arr){
 }
 /* ****************************** Задание 2 ********************************** */
 function getResponseCode(idThis) {
-	var parent = document.getElementById('resTwo');
+	var parent = document.getElementById('TWO');
 	if((document.getElementById('wrapButton'))===null) {
 		parent.removeChild(document.getElementById(idThis)); /* удаляем кнопку */
 		var wrapDiv = document.createElement('DIV');

@@ -5,24 +5,25 @@
 		<title>Title of TestIS</title>
 		<link rel="stylesheet" href="index.css"/>
 		<!--<script src="prefixfree.min.js"></script>-->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 		<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
 	</head>
 	<body>
 		<div id="wrap">
 			<div id="container">
-				<div id="one" onselectstart="return false" onmousedown="return false"  onmouseover="onHoverNavigation(id)">Испытание 1</div><!--
-				--><div id="two" onmouseover="onHoverNavigation(id)">Испытание 2</div><!--
-				--><div id="three" onselectstart="return false" onmousedown="return false"  onmouseover="onHoverNavigation(id)">Испытание 3</div><!--
-				--><div class="content" id="resOne">
+				<div class="tabs" id="one">Испытание 1</div><!--
+				--><div class="tabs" id="two">Испытание 2</div><!--
+				--><div class="tabs" id="three">Испытание 3</div><!--
+				--><div class="content" id="ONE">
 					<form class="post-form">
 						<input type="text" placeholder="text message of request" class="input-text">
 						<input type="button" onclick="postMsg()" value="POST" class="buttons btn-post">
 					</form>
 				</div><!--
-				--><div class="content" id="resTwo">
+				--><div class="content" id="TWO">
 					<button class="buttons btn-codes" id="get-res-code" onclick="getResponseCode(id)">Get response codes</button>	
 				</div><!--
-				--><div class="content" id="resThree">		   
+				--><div class="content" id="THREE">		   
 				   <button class="buttons btn-get" onclick="createList()">Get data</button>					  
 				</div>
 			</div>
