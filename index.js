@@ -1,7 +1,7 @@
 'use strict';
 /* ******************************* Global ************************************************** */
 var allItems = {};
-var resultString = '';
+/*var resultString = '{}';*/
 /* *******************************  ************************************ */
 
 /* Динамическая высота container */
@@ -36,24 +36,22 @@ $(document).ready(function() {
 			$('#list').remove();
 			$('#btn-clear').remove();})
 		}
-		setTimeout(function() {
-			callOtherDomain('GET', '/data_set');
-			var obj = JSON.stringify(resultString);
-			alert(obj + " " + resultString);
-		}, 10);
-		setTimeout(function() {console.log(resultString);}, 200);
-		
+			callOtherDomain('GET', '/data_set', showList);			
 	});
 
 });
+
+function showList(string) {
+	console.log(string);
+}
 		
 /* ***************************************************************************************** */
-function callOtherDomain(method, endOfUrl) {
+function callOtherDomain(method, endOfUrl,callbackShow) {
 	var url = 'http://careers.intspirit.com/endpoint' + endOfUrl;
 	var request = new window.XMLHttpRequest();
 	request.open(method, url, true);
 	request.onload = function() { 
-		resultString = request.responseText;
+		callbackShow(request.responseText);
 		
 	}
 	request.onerror = function() {
@@ -167,11 +165,11 @@ function inArr(str, arr) {
 	return boolVar;
 }
 /* Вывод списка в list */
-function showList(){
+/*function showList(){
 	out = ololo(items);
 	for(var i=0; i<types.length; i++) { 
 		if((window.document.getElementById(types[i]))===null && types[i]!==undefined) {
-			var newUl = document.createElement('UL'); /* добавление нового ul */
+			var newUl = document.createElement('UL'); 
 			newUl.className = "ul-list";
 			newUl.innerHTML = types[i];
 			newUl.id = types[i];
@@ -182,7 +180,7 @@ function showList(){
 			updateElements(i);
 		}
 	}
-}
+}*/
 function updateElements(i) {
 	for(var key in out[i]) {
 		var element = window.document.getElementById(key); 
@@ -232,23 +230,23 @@ function keyInArr(str, arr){
 	return boolValue;
 }
 /* ****************************** Задание 2 ********************************** */
-function getResponseCode(idThis) {
+/*function getResponseCode(idThis) {
 	var parent = document.getElementById('TWO');
 	if((document.getElementById('wrapButton'))===null) {
-		parent.removeChild(document.getElementById(idThis)); /* удаляем кнопку */
+		parent.removeChild(document.getElementById(idThis)); 
 		var wrapDiv = document.createElement('DIV');
 		wrapDiv.id = "wrapButton";
 		wrapDiv.className = "wrapButton";
-		parent.appendChild(wrapDiv); /* добавляем обертку */
+		parent.appendChild(wrapDiv); 
 		var parent2 = document.getElementById(wrapDiv.id);
 		var newButton = document.createElement('BUTTON');
 		newButton.className = "buttons new-btn-codes";
 		newButton.id = "get-res-code";
 		newButton.innerText = "Get response codes";
 		newButton.onclick = function onclick(event) { getResponseCode('get-res-code'); }		
-		parent2.appendChild(newButton); /* добавляем кнопку */
+		parent2.appendChild(newButton); 
 	}	
-	if((document.getElementById('codes'))===null) { /* добавление контайнера для вывода информации */
+	if((document.getElementById('codes'))===null) { 
 		var codesDiv = document.createElement('DIV');
 		codesDiv.className = "wrap-codes";
 		codesDiv.id = "codes";
@@ -261,8 +259,8 @@ function getResponseCode(idThis) {
 		setTimeout(callOtherDomain('GET', '/response_codes', arrayResponse, parseResponseCode, showResponseCodes), 100);
 	}
 }
-function showResponseCodes() { /* добавление таблицы с данными */ 
-	if((document.getElementById('table'))===null) { /* добавление контайнера для вывода информации */
+function showResponseCodes() { 
+	if((document.getElementById('table'))===null) { 
 		parent = document.getElementById('codes');
 		var codesTable = document.createElement('TABLE');
 		codesTable.id = "table";
@@ -292,8 +290,8 @@ function parseResponseCode(string) {
 	else {
 		var regExpParse = new RegExp(/\b\w+?\b/gi);
 	}
-	var ar = string.match(regExpParse); /* ar[0]=result; ar[1]=text */
-	if(ar[0]=="true") { /* изменяем цвет div'а "wrapButton" */
+	var ar = string.match(regExpParse); /* ar[0]=result; ar[1]=text 
+	if(ar[0]=="true") { 
 		changeColorButton('greenButton');
 		errors[0]++;
 		countLastErrors=0;
