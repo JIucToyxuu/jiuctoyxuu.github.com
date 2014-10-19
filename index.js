@@ -143,20 +143,20 @@ function updateElements(i) {
 	for(var key in out[i]) {
 		var element = window.document.getElementById(key); 
 		var parentElement = window.document.getElementById(types[i]);
-			if(element===null) {
-				addElement(i, key, parentElement);
-			}
-			else {
-				parentElement.removeChild(element);
-				addElement(i, key,parentElement);
-			}
+			if(element!==null) { parentElement.removeChild(element); }
+			addElement(i, key,parentElement);
 	}
 }
 function addElement(i, key, parentElement) {
 	var newLi = document.createElement('LI');
 	newLi.className = "li-list";
-	newLi.innerHTML = out[i][key] + " " + key;
+	var firstLetter = key.charAt(0).toUpperCase();
+	var otherLetters = key.replace(key.charAt(0), '');
+	newLi.innerHTML = out[i][key] + " " + firstLetter + otherLetters;
 	newLi.id = key;
+	if(key!='potatoes' && out[i][key]>1) {
+		newLi.innerHTML =  out[i][key] + " " + firstLetter + otherLetters + "s";
+	}
 	parentElement.appendChild(newLi);
 }
 function ololo(ar) {
@@ -253,14 +253,12 @@ function parseResponseCode(string) {
 	}
 	var ar = string.match(regExpParse); /* ar[0]=result; ar[1]=text */
 	if(ar[0]=="true") { /* изменяем цвет div'а "wrapButton" */
-		changeColorButton('greenButton');		
-		/*document.getElementById('wrapButton').style.background = "rgba(0, 254, 0, 0.7)"; /*green */
+		changeColorButton('greenButton');
 		errors[0]++;
 		countLastErrors=0;
 	}
 	else {
-		changeColorButton('redButton');	
-		/*document.getElementById('wrapButton').style.background = "rgba(254, 0, 0, 0.7)"; /* red */
+		changeColorButton('redButton');
 		errors[1]++;
 		countLastErrors++;
 	}
