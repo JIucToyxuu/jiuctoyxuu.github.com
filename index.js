@@ -126,8 +126,7 @@ function showList(){
 	out = ololo(items);
 	for(var i=0; i<types.length; i++) { 
 		if((window.document.getElementById(types[i]))===null && types[i]!==undefined) {
-			/* добавление нового ul */
-			var newUl = document.createElement('UL');
+			var newUl = document.createElement('UL'); /* добавление нового ul */
 			newUl.className = "ul-list";
 			newUl.innerHTML = types[i];
 			newUl.id = types[i];
@@ -203,23 +202,20 @@ function getResponseCode(idThis) {
 		newButton.innerText = "Get response codes";
 		newButton.onclick = function onclick(event) { getResponseCode('get-res-code'); }		
 		parent2.appendChild(newButton); /* добавляем кнопку */
+	}	
+	if((document.getElementById('codes'))===null) { /* добавление контайнера для вывода информации */
+		var codesDiv = document.createElement('DIV');
+		codesDiv.className = "wrap-codes";
+		codesDiv.id = "codes";
+		parent.appendChild(codesDiv);
+		var arrayResponse = ['result', 'text'];
+		callOtherDomain('GET', '/response_codes', arrayResponse, parseResponseCode, showResponseCodes);
 	}
-	
-		if((document.getElementById('codes'))===null) { /* добавление контайнера для вывода информации */
-			var codesDiv = document.createElement('DIV');
-			codesDiv.className = "wrap-codes";
-			codesDiv.id = "codes";
-			parent.appendChild(codesDiv);
-			var arrayResponse = ['result', 'text'];
-			callOtherDomain('GET', '/response_codes', arrayResponse, parseResponseCode, showResponseCodes);
-		}
-		else {
-			var arrayResponse = ['result', 'text'];
-			setTimeout(callOtherDomain('GET', '/response_codes', arrayResponse, parseResponseCode, showResponseCodes), 100);
-		}
+	else {
+		var arrayResponse = ['result', 'text'];
+		setTimeout(callOtherDomain('GET', '/response_codes', arrayResponse, parseResponseCode, showResponseCodes), 100);
+	}
 }
-
-
 function showResponseCodes() { /* добавление таблицы с данными */ 
 	if((document.getElementById('table'))===null) { /* добавление контайнера для вывода информации */
 		parent = document.getElementById('codes');
@@ -290,8 +286,33 @@ function changeColorButton(id) {
 	}
 	if(id == 'redButton') {
 		document.getElementById('wrapButton').className += " red-btn";
-	}
+	}		
+}
+/*  **************************** Испытание 1 ************************** */
+function postMsg() {
+	/*var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+	xmlhttp.open("POST", "http://careers.intspirit.com/endpoint/post_response", true);
+	xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	xmlhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+	xmlhttp.send(JSON.stringify({name:"John Rambo", time:"2pm"}));
+	console.log(xmlhttp);*/
+	
+	
+	/*var xmlhttp;
+    xmlhttp = new XMLHttpRequest();
 
-		/*document.getElementById('wrapButton').className += ' red-btn';*/
-		
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            alert(xmlhttp.responseText);
+            alert("success");
+        }
+    }
+
+    xmlhttp.open("POST", 'http://careers.intspirit.com/endpoint/post_response', true);
+    xmlhttp.setRequestHeader("Content-Type", "application/json");
+    xmlhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+    xmlhttp.setRequestHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    xmlhttp.setRequestHeader("Access-Control-Allow-Methods","POST, GET, OPTIONS, DELETE, PUT, HEAD");
+    xmlhttp.setRequestHeader("Access-Control-Max-Age","1728000");   
+    xmlhttp.send(JSON.stringify({name:"John Rambo", time:"2pm"}));*/
 }

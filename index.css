@@ -66,7 +66,6 @@ html, body {
 #resThree {
 	z-index: -1;
 }
-
 .wrap-list {
 	background: rgba(212, 219, 226, 0.75);
 	border-radius: 7px;
@@ -97,12 +96,12 @@ html, body {
 	left: 50%;
 	margin-left: -75px;
 	position: absolute;
-	top: 40px;
 	width: 150px;
 }
 .btn-clear {
 	background-image: linear-gradient(#B72D2D, #83182D);
 	position: relative;
+	top: 40px;
 }
 .btn-codes {
 	margin-left: -90px;
@@ -113,6 +112,9 @@ html, body {
 	margin-left: -90px;
 	top: 10px;
 	width: 180px;
+}
+.btn-get {
+	top: 40px;
 }
 .wrapButton {
 	border-radius: 5px;
@@ -191,4 +193,34 @@ table td {
 }
 #b3 {
 	left: 495px;
+}
+/* ********************************** */
+.post-form {
+	position: relative;
+	background: rgba(212, 219, 226, 0.75);
+	border-radius: 7px;
+	border: 2px #abc solid;
+	display: block;
+	min-height: 170px;
+	margin: 0 auto;
+	margin-top: 100px;
+	width: 500px;
+}
+.btn-post {
+	position: absolute;
+	margin-left: -90px;
+	bottom: 15px;
+	width: 180px;
+	background-image: linear-gradient(#18E41B, #0E7E21);
+}
+.input-text {
+	display: block;
+	margin: 40px auto;
+	top: 10px;
+	width: 400px;
+	height: 40px;
+	padding: 0 15px;
+	background: rgba(212, 219, 226, 0.75);
+	border-radius: 5px;	
+	font-size: 1em;	
 }
