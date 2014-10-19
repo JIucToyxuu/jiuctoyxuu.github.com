@@ -1,7 +1,8 @@
 'use strict';
 /* ******************************* Global ************************************************** */
 var allItems = {};
-/*var resultString = '{}';*/
+var countErrors = [0,0];
+var countLastErrors = 0;
 /* *******************************  ************************************ */
 
 /* Динамическая высота container */
@@ -40,7 +41,6 @@ $(document).ready(function() {
 	});
 	/* ******************************* Задание 2 *********************************************** */
 	$('#get-res-code').click(function() {
-			callOtherDomain('GET', '/response_codes', showCodes);
 			/* ******* Таблица статистики ******** */
 			var statWindow = '<div class="wrap-codes" id="codes">\
 			<table id="table"><tbody><tr id="head"><td>Success</td><td>Percent error</td><td>Failure</td></tr>\
@@ -52,12 +52,13 @@ $(document).ready(function() {
 				$('#get-res-code').addClass('new-btn-codes');
 				$('#TWO').append(statWindow);
 			}
+			callOtherDomain('GET', '/response_codes', showCodes);
 			
 			
 	});
 
 });
-/* ***************************** */
+/* ************** 3# *************** */
 function showList(string) {
 	/* parse in mozilla & opera */
 	var ar = {};
@@ -76,15 +77,15 @@ function showList(string) {
 	
 	console.log(ar);
 }
-/* ********************************* */
+/* *************** 2# ****************** */
 function showCodes(string) {
 	/* parse in mozilla & opera */
 	var ar = {};
 	if((typeof InstallTrigger !== undefined && !window.chrome) || !!window.opera) {
 		var regExpParse = new RegExp(/\b(?:[\w!]+?(?=<\/))/gi);
 		var result = string.match(regExpParse);
-		ar['item'] = result[0];
-		ar['type'] = result[1];
+		ar['result'] = result[0];
+		ar['text'] = result[1];
 		
 	}
 	/* parse in other browsers */
@@ -92,6 +93,26 @@ function showCodes(string) {
 		var ar = $.parseJSON(string);
 	}
 	console.log(ar);
+	if(ar['result'].toString()=='true') {
+		countErrors[1]++; /* +1 Success */
+		$('#wrapButton').removeClass('red-btn').addClass('green-btn');
+		countLastErrors = 0;
+	}
+	else {
+		countErrors[0]++; /* +1 Error */
+		$('#wrapButton').removeClass('green-btn').addClass('red-btn');
+		countLastErrors++;
+	}
+	console.log(countErrors);
+	var trues = parseInt(countErrors[1]);
+	var errors = parseInt(countErrors[0]);
+	$('#countS').empty().append(trues);
+	$('#countF').empty().append(errors);
+	$('#countP').empty().append(((errors/(trues+errors))*100).toFixed(2) + "%");
+	$('#last').empty().append("Ошибок с крайнего успеха - " + countLastErrors);
+	
+	
+	
 }	
 /* ***************************************************************************************** */
 function callOtherDomain(method, endOfUrl,callbackShow) {

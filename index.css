@@ -114,6 +114,12 @@ html, body {
 	top: 45px;
 	width: 200px;
 }
+.green-btn {
+	background: rgba(0, 254, 0, 0.7);
+}
+.red-btn {
+	background: rgba(254, 0, 0, 0.7);
+}
 .wrap-codes {
 	background: rgba(212, 219, 226, 0.75);
 	border-radius: 2px;
