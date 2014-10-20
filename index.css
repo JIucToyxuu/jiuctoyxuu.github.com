@@ -138,9 +138,6 @@ table {
 	padding: 0;
 	width: 450px;
 }
-table * {
-	/*border: 2px black solid; /* Test */
-}
 table td {
 	width: 150px;
 }
