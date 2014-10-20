@@ -1,7 +1,6 @@
 * {
 	-webkit-user-select: none;
 	-moz--user-select: none;
-	-ms-user-select: none;
 	-o-user-select: none;
 	user-select: none;
 	box-sizing: border-box;
@@ -14,9 +13,6 @@ html, body {
 	min-width: 800px;	
 }
 /* **** */
-#wrap, #container {
-	display: block;
-}
 #container {
 	height: inherit;
 	margin: 0 auto;
@@ -114,10 +110,10 @@ html, body {
 	top: 45px;
 	width: 200px;
 }
-.green-btn {
+.green {
 	background: rgba(0, 254, 0, 0.7);
 }
-.red-btn {
+.red {
 	background: rgba(254, 0, 0, 0.7);
 }
 .wrap-codes {
@@ -187,32 +183,58 @@ table td {
 	left: 495px;
 }
 /* ********************************** */
-.post-form {
-	position: relative;
-	background: rgba(212, 219, 226, 0.75);
-	border-radius: 7px;
+#post-form {	
 	border: 2px #abc solid;
-	display: block;
-	min-height: 170px;
-	margin: 0 auto;
-	margin-top: 100px;
+	background: rgba(212, 219, 226, 0.75);	
+	margin: 40px auto;
+	margin-top: 70px;
 	width: 500px;
+	border-radius:7px;
 }
-.btn-post {
-	position: absolute;
-	margin-left: -90px;
-	bottom: 15px;
+#btn-post {	
+	border-radius:7px;
+	color: #fff;
+	font-size: 1em;
+	height: 40px;
+	margin: 0px 160px;
+	margin-bottom: 40px;
 	width: 180px;
 	background-image: linear-gradient(#18E41B, #0E7E21);
 }
-.input-text {
-	display: block;
-	margin: 40px auto;
+#btn-post:focus {
+	outline: #ffffff;
+}
+#input-text {
+	border-radius:5px;
+	margin: 40px 50px;
 	top: 10px;
 	width: 400px;
 	height: 40px;
 	padding: 0 15px;
 	background: rgba(212, 219, 226, 0.75);
-	border-radius: 5px;	
 	font-size: 1em;	
+}
+#divMessages {
+	padding: 3px 0;
+	border-radius:5px;
+	background: rgba(212, 219, 226, 0.75);	
+	margin: 0px 50px;
+	max-height: 400px;
+	min-height: 70px;
+	overflow: auto;
+	width: 400px;
+	margin-bottom: 30px;
+}
+.errors {	
+	margin-bottom: 2px;
+	height: 40px;
+	width: 400px;
+	background: repeating-linear-gradient(-13deg, rgba(255, 0, 0, 0.7) 6px, rgba(255,0,0,0.7) 12px, transparent 12px, transparent 18px), rgba(255, 0, 0, 0.55);
+	color: white;
+	text-align: center;
+	line-height: 40px;
+	border-radius: 5px;
+}
+#successStatus {
+	background: repeating-linear-gradient(-13deg, rgba(0, 255, 0, 0.7) 6px, rgba(0,255,0,0.7) 12px, transparent 12px, transparent 18px), rgba(0, 255, 0, 0.55);
 }

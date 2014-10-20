@@ -3,11 +3,12 @@
 var allItems = { };
 var countErrors = [0,0];
 var countLastErrors = 0;
+var countMessageError = 0;
 /* *******************************  ************************************ */
 
 /* Динамическая высота container */
 window.document.body.style.minHeight= screen.height;
-window.document.getElementById("container").style.height = (screen.height-200) + "px";
+window.document.getElementById("container").style.height = (screen.height-201) + "px";
 
 $(document).ready(function() {
 	/* Tabs code */
@@ -38,26 +39,53 @@ $(document).ready(function() {
 			$('#list').remove();
 			$('#btn-clear').remove();})
 		}
-			callOtherDomain('GET', '/data_set', showList);			
+		callOtherDomain('GET', '/data_set', showList);			
 	});
 	/* ******************************* Задание 2 *********************************************** */
 	$('#get-res-code').click(function() {
-			/* ******* Таблица статистики ******** */
-			var statWindow = '<div class="wrap-codes" id="codes">\
-			<table id="table"><tbody><tr id="head"><td>Success</td><td>Percent error</td><td>Failure</td></tr>\
-			<tr id="count"><td id="countS"></td><td id="countP"></td><td id="countF"></td></tr>\
-			<tr id="lastError"><td colspan="3" id="last"></td></tr></tbody></table>\
-			<div id="b1"></div><div id="b2"></div><div id="b3"></div></div>'
-			if(!$('#wrapButton').length) {
-				$('#get-res-code').wrap('<div id="wrapButton" class="wrapButton"></div>');
-				$('#get-res-code').addClass('new-btn-codes');
-				$('#TWO').append(statWindow);
-			}
-			callOtherDomain('GET', '/response_codes', showCodes);			
+		/* ******* Таблица статистики ******** */
+		var statWindow = '<div class="wrap-codes" id="codes">\
+		<table id="table"><tbody><tr id="head"><td>Success</td><td>Percent error</td><td>Failure</td></tr>\
+		<tr id="count"><td id="countS"></td><td id="countP"></td><td id="countF"></td></tr>\
+		<tr id="lastError"><td colspan="3" id="last"></td></tr></tbody></table>\
+		<div id="b1"></div><div id="b2"></div><div id="b3"></div></div>'
+		if(!$('#wrapButton').length) {
+			$('#get-res-code').wrap('<div id="wrapButton" class="wrapButton"></div>');
+			$('#get-res-code').addClass('new-btn-codes');
+			$('#TWO').append(statWindow);
+		}
+		callOtherDomain('GET', '/response_codes', showCodes);			
 	});
+	/* ******************************* Задание 1 *********************************************** */
+	$('#btn-post').click(function () {
+		if(!$("div").is("#divMessages")) { /* добавление div с первым сообщением */
+			$('#input-text').after('<div id="divMessages"></div>');
+		}
+		if(!$.trim($('#input-text').val())) { /* пустая строка? */
+			$('#btn-post').attr('Value', 'Resubmit');
+			$('#input-text').val(''); /* на случай строки пробельных символов */
+			/* да пустая */
+			if(countMessageError>=5) {				
+				$('.errors').first().remove(); /* удалить старейшую ошибку */
+			}
+			$('#divMessages').append('<div class="errors">The field is empty!</div>'); /* добавить ошшибку */
+			countMessageError++;
+		}
+		else {
+			var result = {};
+			var request = new window.XMLHttpRequest();
+    		request.open('POST', 'http://careers.intspirit.com/endpoint/post_response', true);
+        	request.setRequestHeader('Content-Type', '	application/x-www-form-urlencoded; charset=UTF-8');
+    		request.onload = function() { showMessage(request);}
+    		request.onerror = function() { alert(request.responseText) }       
+    		request.send("request="+$('#input-text').val())
+		}		
+	});
+	
 });
 /* ************** 3# *************** */
-function showList(string) {
+function showList(obj) {
+	var string = obj.responseText;
 	/* parse in mozilla & opera */
 	var ar = {};
 	if((typeof InstallTrigger !== undefined && !window.chrome) || !!window.opera) {
@@ -84,7 +112,6 @@ function showList(string) {
 			allItems[ar['type']][ar['item']]++;
 		}		
 	} /* allItems['type']['item'] */
-	console.log(allItems);
 	/* ******* Отображение списка ******* */
 	for(var iType in allItems){
 		var plurality = '';
@@ -102,7 +129,8 @@ function showList(string) {
 	}	
 }
 /* *************** 2# ****************** */
-function showCodes(string) {
+function showCodes(obj) {
+	var string = obj.responseText;
 	/* parse in mozilla & opera */
 	var ar = {};
 	if((typeof InstallTrigger !== undefined && !window.chrome) || !!window.opera) {
@@ -118,32 +146,53 @@ function showCodes(string) {
 	}
 	if(ar['result'].toString()=='true') {
 		countErrors[1]++; /* +1 Success */
-		$('#wrapButton').removeClass('red-btn').addClass('green-btn');
+		$('#wrapButton').removeClass('red').addClass('green');
 		countLastErrors = 0;
 	}
 	else {
 		countErrors[0]++; /* +1 Error */
-		$('#wrapButton').removeClass('green-btn').addClass('red-btn');
+		$('#wrapButton').removeClass('green').addClass('red');
 		countLastErrors++;
 	}
-	console.log(countErrors);
 	var trues = parseInt(countErrors[1]);
 	var errors = parseInt(countErrors[0]);
 	$('#countS').empty().append(trues);
 	$('#countF').empty().append(errors);
 	$('#countP').empty().append(((errors/(trues+errors))*100).toFixed(2) + "%");
-	$('#last').empty().append("Ошибок с крайнего успеха - " + countLastErrors);
+	$('#last').empty().append("Ошибок с крайнего успеха - " + countLastErrors);	
+}
+/* *************** 1# ****************** */
+function showMessage(obj) {
+	if(obj.status===200) { /* удачный запрос */
+		$('#input-text').val('');
+		$('.errors').remove();
+		$('#divMessages').append('<div class="errors" id="successStatus">'+obj.response+' Status request: '+obj.status+'</div>');
+		$('#btn-post').prop('disabled', true);
+		setTimeout(function(){ $('#btn-post').attr('Value', '3 ...'); }, 10);
+		setTimeout(function(){ $('#btn-post').attr('Value', '2 ...'); }, 1010);
+		setTimeout(function(){ $('#btn-post').attr('Value', '1 ...'); }, 2010);
+		setTimeout(function(){ $('#btn-post').attr('Value', 'Submit'); }, 3010);
+		setTimeout(function(){ $('#btn-post').prop('disabled', false); }, 3100);
+		setTimeout(function(){ $('#divMessages').remove(); }, 3100);
+		countMessageError=0;
+	}
+	else { /* ошибка. передана 'error' */ 
+		$('#btn-post').attr('Value', 'Resubmit');
+		if(countMessageError>=5) {				
+			$('.errors').first().remove(); /* удалить старейшую ошибку */
+		}
+		$('#divMessages').append('<div class="errors">Error! '+obj.statusText+'! Status request: '+obj.status+'</div>'); /* добавить ошшибку */
+		countMessageError++;
+	}
 	
-	
-	
-}	
+}
 /* ***************************************************************************************** */
 function callOtherDomain(method, endOfUrl,callbackShow) {
 	var url = 'http://careers.intspirit.com/endpoint' + endOfUrl;
 	var request = new window.XMLHttpRequest();
 	request.open(method, url, true);
 	request.onload = function() { 
-		callbackShow(request.responseText);
+		callbackShow(request);
 		
 	}
 	request.onerror = function() {
