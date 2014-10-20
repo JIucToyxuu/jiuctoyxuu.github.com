@@ -1,6 +1,6 @@
 'use strict';
 /* ******************************* Global ************************************************** */
-var allItems = {};
+var allItems = { };
 var countErrors = [0,0];
 var countLastErrors = 0;
 /* *******************************  ************************************ */
@@ -66,14 +66,42 @@ function showList(string) {
 		var regExpParse = new RegExp(/\b(?:[\w!]+?(?=<\/))/gi);
 		var result = string.match(regExpParse);
 		ar['item'] = result[0];
-		ar['type'] = result[1];
-		
+		ar['type'] = result[1];		
 	}
 	/* parse in other browsers */
 	else {
 		var ar = $.parseJSON(string);
 	}
+	/* **** Добавление значений в объект **** */
+	if(!allItems.hasOwnProperty(ar['type'])) {		
+		allItems[ar['type']] = {};
+		allItems[ar['type']][ar['item']] = 1;	
+	}
+	else {
+		if(!allItems[ar['type']].hasOwnProperty(ar['item']))
+		{
+			allItems[ar['type']][ar['item']]=1;
+		}
+		else {
+			allItems[ar['type']][ar['item']]++;
+		}		
+	} /* allItems['type']['item'] */
+	console.log(allItems);
 	
+	
+	
+	/*else {
+		countErrors[0]++; 
+		$('#wrapButton').removeClass('green-btn').addClass('red-btn');
+		countLastErrors++;
+	}
+	console.log(countErrors);
+	var trues = parseInt(countErrors[1]);
+	var errors = parseInt(countErrors[0]);
+	$('#countS').empty().append(trues);
+	$('#countF').empty().append(errors);
+	$('#countP').empty().append(((errors/(trues+errors))*100).toFixed(2) + "%");
+	$('#last').empty().append("Ошибок с крайнего успеха - " + countLastErrors);*/
 	
 	console.log(ar);
 }
