@@ -76,6 +76,10 @@ $(document).ready(function() {
 			var ob = $.post('http://careers.intspirit.com/endpoint/post_response', params, function(response, status, obj) { showMessage(obj) });
 		}		
 	});
+	$("#post-form").on("submit", function (e) {
+		e.preventDefault();
+		$('#btn-post').click();
+	});
 	
 });
 /* ************** 3# *************** */
@@ -115,7 +119,7 @@ function showList(obj) {
 /* *************** 2# ****************** */
 function showCodes(obj) {
 	var result = obj['result'];
-	if(result.toString()==="true") {
+	if(result) {
 		countErrors[1]++; /* +1 Success */
 		$('#wrapButton').removeClass('red').addClass('green');
 		countLastErrors = 0;
