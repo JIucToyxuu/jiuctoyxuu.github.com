@@ -38,6 +38,9 @@ html, body {
 }
 
 /* ************************ */
+#ONE {
+	z-index: 2;
+}
 .content {
 	background: url(image/wavegrid.png);
 	border: 4px #4EC6DE solid;
@@ -48,9 +51,7 @@ html, body {
 	top: 100px;
 	width: 100%;	
 }
-#ONE {
-	z-index: 2;
-}
+
 .wrap-list {
 	background: rgba(212, 219, 226, 0.75);
 	border-radius: 7px;

@@ -176,7 +176,7 @@ function showMessage(obj) {
 		setTimeout(function(){ $('#divMessages').remove(); }, 3100);
 		countMessageError=0;
 	}
-	else { /* ошибка. передана 'error' */ 
+	else { /* ошибка. передана строка начинающаяся с 'error' */ 
 		$('#btn-post').attr('Value', 'Resubmit');
 		if(countMessageError>=5) {				
 			$('.errors').first().remove(); /* удалить старейшую ошибку */
