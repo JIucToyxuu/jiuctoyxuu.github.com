@@ -156,10 +156,10 @@ function showCodes(obj) {
 	}
 	var trues = parseInt(countErrors[1]);
 	var errors = parseInt(countErrors[0]);
-	$('#countS').empty().append(trues);
-	$('#countF').empty().append(errors);
-	$('#countP').empty().append(((errors/(trues+errors))*100).toFixed(2) + "%");
-	$('#last').empty().append("Ошибок с крайнего успеха - " + countLastErrors);	
+	$('#countS').html(trues);
+	$('#countF').html(errors);
+	$('#countP').html(((errors/(trues+errors))*100).toFixed(2) + "%");
+	$('#last').html("Ошибок с крайнего успеха - " + countLastErrors);	
 }
 /* *************** 1# ****************** */
 function showMessage(obj) {
@@ -167,13 +167,10 @@ function showMessage(obj) {
 		$('#input-text').val('');
 		$('.errors').remove();
 		$('#divMessages').append('<div class="errors" id="successStatus">'+obj.response+' Status request: '+obj.status+'</div>');
-		$('#btn-post').prop('disabled', true);
-		setTimeout(function(){ $('#btn-post').attr('Value', '3 ...'); }, 10);
-		setTimeout(function(){ $('#btn-post').attr('Value', '2 ...'); }, 1010);
-		setTimeout(function(){ $('#btn-post').attr('Value', '1 ...'); }, 2010);
-		setTimeout(function(){ $('#btn-post').attr('Value', 'Submit'); }, 3010);
-		setTimeout(function(){ $('#btn-post').prop('disabled', false); }, 3100);
-		setTimeout(function(){ $('#divMessages').remove(); }, 3100);
+		$('#btn-post').prop('disabled', true).attr('Value', '3 ...');
+		var i = 2;
+		var timer = setInterval(function(){ $('#btn-post').attr('Value', i+' ...'); i--; if(i==0) {clearInterval(timer)} }, 1000);
+		setTimeout(function(){ $('#btn-post').attr('Value', 'Submit').prop('disabled', false); $('#divMessages').remove();}, 3000);
 		countMessageError=0;
 	}
 	else { /* ошибка. передана строка начинающаяся с 'error' */ 
