@@ -35,8 +35,8 @@ $(document).ready(function() {
 			allItems = {};
 			$('#list').remove();
 			$('#btn-clear').remove();})
-		}
-		callOtherDomain('GET', '/data_set', showList);			
+		}		
+		$.get('http://careers.intspirit.com/endpoint/data_set', function(response) { showList(response); });		
 	});
 	/* ******************************* Задание 2 *********************************************** */
 	$('#get-res-code').click(function() {
@@ -51,7 +51,7 @@ $(document).ready(function() {
 			$('#get-res-code').addClass('new-btn-codes');
 			$('#TWO').append(statWindow);
 		}
-		callOtherDomain('GET', '/response_codes', showCodes);			
+		$.get('http://careers.intspirit.com/endpoint/response_codes', function(response) { showCodes(response); });			
 	});
 	/* ******************************* Задание 1 *********************************************** */
 	$('#btn-post').click(function () {
@@ -69,21 +69,19 @@ $(document).ready(function() {
 			countMessageError++;
 		}
 		else {
-			var result = {};
-			var request = new window.XMLHttpRequest();
-    		request.open('POST', 'http://careers.intspirit.com/endpoint/post_response', true);
-        	request.setRequestHeader('Content-Type', '	application/x-www-form-urlencoded; charset=UTF-8');
-    		request.onload = function() { showMessage(request);}
-    		request.onerror = function() { alert(request.responseText) }       
-    		request.send("request="+$('#input-text').val())
+			var params = {
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+				"request" : $('#input-text').val()
+			}
+			var ob = $.post('http://careers.intspirit.com/endpoint/post_response', params, function(response, status, obj) { showMessage(obj) });
 		}		
 	});
 	
 });
 /* ************** 3# *************** */
 function showList(obj) {
-	var item = $(obj.responseXML).find('item').text() || $.parseJSON(obj.responseText)['item'];
-	var type = $(obj.responseXML).find('type').text() || $.parseJSON(obj.responseText)['type'];	
+	var item = obj['item'];
+	var type = obj['type'];	
 	/* **** Добавление значений в объект **** */ 
 	if(!allItems.hasOwnProperty(type)) {		
 		allItems[type] = {};
@@ -116,9 +114,7 @@ function showList(obj) {
 }
 /* *************** 2# ****************** */
 function showCodes(obj) {
-	var result = $(obj.responseXML).find('result').text() || $.parseJSON(obj.responseText)['result'];
-	console.log(obj)
-	console.log(result.toString()==="true")
+	var result = obj['result'];
 	if(result.toString()==="true") {
 		countErrors[1]++; /* +1 Success */
 		$('#wrapButton').removeClass('red').addClass('green');
@@ -141,11 +137,11 @@ function showMessage(obj) {
 	if(obj.status===200) { /* удачный запрос */
 		$('#input-text').val('');
 		$('.errors').remove();
-		$('#divMessages').append('<div class="errors" id="successStatus">'+obj.response+' Status request: '+obj.status+'</div>');
+		$('#divMessages').append('<div class="errors" id="successStatus">'+obj.responseText+' Status request: '+obj.status+'</div>');
 		$('#btn-post').prop('disabled', true).attr('Value', '3 ...');
 		var i = 2;
-		var timer = setInterval(function(){ $('#btn-post').attr('Value', i+' ...'); i--; if(i) {clearInterval(timer)} }, 1000);
-		setTimeout(function(){ $('#btn-post').attr('Value', 'Submit').prop('disabled', false); $('#divMessages').remove();}, 3000);
+		var timer = setInterval(function(){ $('#btn-post').attr('Value', i+' ...'); if(!i) {clearInterval(timer)} i--; }, 1000);
+		setTimeout(function(){ $('#btn-post').attr('Value', 'Submit').prop('disabled', false); $('#divMessages').remove();}, 3100);
 		countMessageError=0;
 	}
 	else { /* ошибка. передана строка начинающаяся с 'error' */ 
@@ -158,18 +154,3 @@ function showMessage(obj) {
 	}
 	
 }
-/* ***************************************************************************************** */
-function callOtherDomain(method, endOfUrl,callbackShow) {
-	var url = 'http://careers.intspirit.com/endpoint' + endOfUrl;
-	var request = new window.XMLHttpRequest();
-	request.open(method, url, true);
-	request.onload = function() { 
-		callbackShow(request);
-		
-	}
-	request.onerror = function() {
-		alert(request.responseText);
-	}
-	request.send();
-}
-/* ***************************************************************************************** */
