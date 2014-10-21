@@ -12,14 +12,11 @@ window.document.getElementById("container").style.height = (screen.height-201) +
 
 $(document).ready(function() {
 	/* Tabs code */
-	var idTabPrev = '';
+	var idTabPrev = 'one';
 	$(".tabs").hover(function(){
-		if(idTabPrev!=='') {
+		if(idTabPrev) {
 			$('#'+idTabPrev.toUpperCase()).css("z-index", "0");
 			$('#'+idTabPrev).css("background","rgba(200,200,200,.7)");
-		}
-		else {
-			$('#one').css("background","rgba(200,200,200,.7)");
 		}
 		$('#'+this.id.toUpperCase()).css("z-index","2");
 		$('#'+this.id).css("background","#4EC6DE");
@@ -85,31 +82,20 @@ $(document).ready(function() {
 });
 /* ************** 3# *************** */
 function showList(obj) {
-	var string = obj.responseText;
-	/* parse in mozilla & opera */
-	var ar = {};
-	if((typeof InstallTrigger !== undefined && !window.chrome) || !!window.opera) {
-		var regExpParse = new RegExp(/\b(?:[\w!]+?(?=<\/))/gi);
-		var result = string.match(regExpParse);
-		ar['item'] = result[0];
-		ar['type'] = result[1];		
-	}
-	/* parse in other browsers */
-	else {
-		var ar = $.parseJSON(string);
-	}
-	/* **** Добавление значений в объект **** */
-	if(!allItems.hasOwnProperty(ar['type'])) {		
-		allItems[ar['type']] = {};
-		allItems[ar['type']][ar['item']] = 1;	
+	var item = $(obj.responseXML).find('item').text() || $.parseJSON(obj.responseText)['item'];
+	var type = $(obj.responseXML).find('type').text() || $.parseJSON(obj.responseText)['type'];	
+	/* **** Добавление значений в объект **** */ 
+	if(!allItems.hasOwnProperty(type)) {		
+		allItems[type] = {};
+		allItems[type][item] = 1;	
 	}
 	else {
-		if(!allItems[ar['type']].hasOwnProperty(ar['item']))
+		if(!allItems[type].hasOwnProperty(item))
 		{
-			allItems[ar['type']][ar['item']]=1;
+			allItems[type][item]=1;
 		}
 		else {
-			allItems[ar['type']][ar['item']]++;
+			allItems[type][item]++;
 		}		
 	} /* allItems['type']['item'] */
 	/* ******* Отображение списка ******* */
@@ -130,21 +116,10 @@ function showList(obj) {
 }
 /* *************** 2# ****************** */
 function showCodes(obj) {
-	var string = obj.responseText;
-	/* parse in mozilla & opera */
-	var ar = {};
-	if((typeof InstallTrigger !== undefined && !window.chrome) || !!window.opera) {
-		var regExpParse = new RegExp(/\b(?:[\w!]+?(?=<\/))/gi);
-		var result = string.match(regExpParse);
-		ar['result'] = result[0];
-		ar['text'] = result[1];
-		
-	}
-	/* parse in other browsers */
-	else {
-		var ar = $.parseJSON(string);
-	}
-	if(ar['result'].toString()=='true') {
+	var result = $(obj.responseXML).find('result').text() || $.parseJSON(obj.responseText)['result'];
+	console.log(obj)
+	console.log(result.toString()==="true")
+	if(result.toString()==="true") {
 		countErrors[1]++; /* +1 Success */
 		$('#wrapButton').removeClass('red').addClass('green');
 		countLastErrors = 0;
@@ -159,7 +134,7 @@ function showCodes(obj) {
 	$('#countS').html(trues);
 	$('#countF').html(errors);
 	$('#countP').html(((errors/(trues+errors))*100).toFixed(2) + "%");
-	$('#last').html("Ошибок с крайнего успеха - " + countLastErrors);	
+	$('#last').html("Ошибок с крайнего успеха - " + countLastErrors);
 }
 /* *************** 1# ****************** */
 function showMessage(obj) {
@@ -169,7 +144,7 @@ function showMessage(obj) {
 		$('#divMessages').append('<div class="errors" id="successStatus">'+obj.response+' Status request: '+obj.status+'</div>');
 		$('#btn-post').prop('disabled', true).attr('Value', '3 ...');
 		var i = 2;
-		var timer = setInterval(function(){ $('#btn-post').attr('Value', i+' ...'); i--; if(i==0) {clearInterval(timer)} }, 1000);
+		var timer = setInterval(function(){ $('#btn-post').attr('Value', i+' ...'); i--; if(i) {clearInterval(timer)} }, 1000);
 		setTimeout(function(){ $('#btn-post').attr('Value', 'Submit').prop('disabled', false); $('#divMessages').remove();}, 3000);
 		countMessageError=0;
 	}
